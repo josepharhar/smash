@@ -6,7 +6,7 @@ import hitbox.RectHitbox;
 public class Player {
     
     // Location and Size
-    RectHitbox hitbox;
+    public RectHitbox hitbox;
     
     // Velocity
     private float vx;
@@ -44,6 +44,14 @@ public class Player {
         hitbox.y = y;
     }
     
+    public void setvx(float vx) {
+        this.vx = vx;
+    }
+    
+    public void setvy(float vy) {
+        this.vy = vy;
+    }
+    
     // apply acceleration or something?
     public void update() {
         float newx = getx() + vx;
@@ -57,7 +65,7 @@ public class Player {
         if (collision == null) {
             hitbox = newHitbox;
         } else {
-            System.out.println("player colliding with map");
+            System.out.println("player colliding with map: " + System.currentTimeMillis());
             
             // If this player moved according to its velocity,
             // then it would collide with the hitbox "collision."
@@ -65,6 +73,10 @@ public class Player {
             // move our hitbox to be adjacent to "collision"
             
             //figure out which side of the hitbox we are hitting
+            
+            //TODO for now, we will assume that we are colliding with a rectangle
+            RectHitbox rectCollision = (RectHitbox) collision;
+            
             
         }
     }

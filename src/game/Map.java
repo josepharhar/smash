@@ -8,14 +8,10 @@ import java.util.List;
 // Contains information (hitboxes) about the structures that appear on the map
 public class Map {
     
-    List<Hitbox> hitboxes;
+    public List<Hitbox> hitboxes;
     
     public Map() {
         hitboxes = new ArrayList<Hitbox>();
-    }
-    
-    public void addHitbox(Hitbox hitbox) {
-        hitboxes.add(hitbox);
     }
     
     // This is called to check if a given hitbox is colliding with the map.

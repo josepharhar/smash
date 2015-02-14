@@ -15,16 +15,13 @@ public class RectHitbox extends Hitbox {
     
     public boolean collidesWith(Hitbox other) {
         if (other instanceof RectHitbox) {
-            // Rectangle collison
-//            return rectangle.intersects(((RectHitbox)other).rectangle);
-            other = (RectHitbox) other;
-            
+            // Rectangle-on-Rectangle collison
+            return isColliding(this, (RectHitbox) other);
         } else if (other instanceof CircleHitbox) {
             // Circle collision
-            // TODO
+            return isColliding(this, (CircleHitbox) other);
         }
         
-        //probably a bad idea
         System.out.println("unknown hitbox collision");
         return false;
     }

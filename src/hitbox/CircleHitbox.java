@@ -14,16 +14,10 @@ public class CircleHitbox extends Hitbox {
     public boolean collidesWith(Hitbox other) {
         if (other instanceof CircleHitbox) {
             // Circle-on-Circle collision
-            CircleHitbox otherCircle = (CircleHitbox) other;
-            double distance = Math.sqrt((otherCircle.x - x) * (otherCircle.x - x) + (otherCircle.y - y) * (otherCircle.y - y));
-            if (distance <= r - otherCircle.r) {
-                return true;
-            } else {
-                return false;
-            }
+            return isColliding(this, (CircleHitbox) other);
         } else if (other instanceof RectHitbox) {
             // Circle-on-Rectangle collision
-            // TODO
+            return isColliding((RectHitbox) other, this);
         }
         
         System.out.println("Unknown Collision");

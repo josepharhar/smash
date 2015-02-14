@@ -31,9 +31,9 @@ public class Runner {
     
     public Runner() {
         map = new Map();
-        map.addHitbox(new RectHitbox(-4, 2, 8, 4));
+        map.hitboxes.add(new RectHitbox(-4f, -4f, 8f, 4f));
         
-        player = new Player(0f, 0f, 0f, 0f, map);
+        player = new Player(-1f, 4f, 2f, 2f, map);
     }
     
     public static void main(String[] args) {
@@ -63,29 +63,28 @@ public class Runner {
     }
     
     private void loop() {
+        
         while (!Display.isCloseRequested()) {
+
+            player.update();
+            
             glLoadIdentity();
             
             //Keyboard
             if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                player.sety(player.gety() + .001f);
-//                y += .001f;
+                player.setvy(.001f);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                player.sety(player.gety() - .001f);
-//                y -= .001f;
+                player.setvy(-.001f);
+            } else {
+                player.setvy(0f);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                player.setx(player.getx() + .001f);
-//                x += .001f;
+                player.setvx(.001f);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-                player.setx(player.getx() - .001f);
-//                x -= .001f;
+                player.setvx(-.001f);
+            } else {
+                player.setvx(0f);
             }
-//            if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-//                z += .001f;
-//            } else if (Keyboard.isKeyDown(Keyboard.KEY_S)){
-//                z -= .001f;
-//            }
             
             //Mouse
             if (Mouse.isButtonDown(0)) {
@@ -124,7 +123,7 @@ public class Runner {
 //        System.out.println("diffy: " + diffy);
         glRotatef(rotation, diffx, -diffy, 0f);
         
-//        drawCube();
+        drawMap();
         drawPlayer();
         
         Display.update();
@@ -134,56 +133,32 @@ public class Runner {
         glBegin(GL_QUADS);
             glColor3f(0f, 1f, 0f);
             
-            float x = player.getx();
-            float y = player.gety();
+            float x1 = player.getx();
+            float y1 = player.gety();
+            float x2 = x1 + player.hitbox.width;
+            float y2 = y1 + player.hitbox.height;
             
-            glVertex3f(x + 1f, y + 1f, 0f);
-            glVertex3f(x + 1f, y - 1f, 0f);
-            glVertex3f(x - 1f, y - 1f, 0f);
-            glVertex3f(x - 1f, y + 1f, 0f);
+            glVertex3f(x1, y1, 0f);
+            glVertex3f(x1, y2, 0f);
+            glVertex3f(x2, y2, 0f);
+            glVertex3f(x2, y1, 0f);
             
         glEnd();
     }
     
-//    private void drawCube() {
-//        
-//        glBegin(GL_QUADS);
-//            glColor3f(0.0f,1.0f,0.0f); // Set The Color To Green
-//            glVertex3f( 1.0f, 1.0f,-1.0f); // Top Right Of The Quad (Top)
-//            glVertex3f(-1.0f, 1.0f,-1.0f); // Top Left Of The Quad (Top)
-//            glVertex3f(-1.0f, 1.0f, 1.0f); // Bottom Left Of The Quad (Top)
-//            glVertex3f( 1.0f, 1.0f, 1.0f); // Bottom Right Of The Quad (Top)
-//            
-//            glColor3f(1.0f,0.5f,0.0f); // Set The Color To Orange
-//            glVertex3f( 1.0f,-1.0f, 1.0f); // Top Right Of The Quad (Bottom)
-//            glVertex3f(-1.0f,-1.0f, 1.0f); // Top Left Of The Quad (Bottom)
-//            glVertex3f(-1.0f,-1.0f,-1.0f); // Bottom Left Of The Quad (Bottom)
-//            glVertex3f( 1.0f,-1.0f,-1.0f); // Bottom Right Of The Quad (Bottom)
-//            
-//            glColor3f(1.0f,0.0f,0.0f); // Set The Color To Red
-//            glVertex3f( 1.0f, 1.0f, 1.0f); // Top Right Of The Quad (Front)
-//            glVertex3f(-1.0f, 1.0f, 1.0f); // Top Left Of The Quad (Front)
-//            glVertex3f(-1.0f,-1.0f, 1.0f); // Bottom Left Of The Quad (Front)
-//            glVertex3f( 1.0f,-1.0f, 1.0f); // Bottom Right Of The Quad (Front)
-//            
-//            glColor3f(1.0f,1.0f,0.0f); // Set The Color To Yellow
-//            glVertex3f( 1.0f,-1.0f,-1.0f); // Bottom Left Of The Quad (Back)
-//            glVertex3f(-1.0f,-1.0f,-1.0f); // Bottom Right Of The Quad (Back)
-//            glVertex3f(-1.0f, 1.0f,-1.0f); // Top Right Of The Quad (Back)
-//            glVertex3f( 1.0f, 1.0f,-1.0f); // Top Left Of The Quad (Back)
-//            
-//            glColor3f(0.0f,0.0f,1.0f); // Set The Color To Blue
-//            glVertex3f(-1.0f, 1.0f, 1.0f); // Top Right Of The Quad (Left)
-//            glVertex3f(-1.0f, 1.0f,-1.0f); // Top Left Of The Quad (Left)
-//            glVertex3f(-1.0f,-1.0f,-1.0f); // Bottom Left Of The Quad (Left)
-//            glVertex3f(-1.0f,-1.0f, 1.0f); // Bottom Right Of The Quad (Left)
-//            
-//            glColor3f(1.0f,0.0f,1.0f); // Set The Color To Violet
-//            glVertex3f( 1.0f, 1.0f,-1.0f); // Top Right Of The Quad (Right)
-//            glVertex3f( 1.0f, 1.0f, 1.0f); // Top Left Of The Quad (Right)
-//            glVertex3f( 1.0f,-1.0f, 1.0f); // Bottom Left Of The Quad (Right)
-//            glVertex3f( 1.0f,-1.0f,-1.0f); // Bottom Right Of The Quad (Right)
-//        glEnd();
-//    }
+    private void drawMap() {
+        for (Hitbox hitbox : map.hitboxes) {
+            if (hitbox instanceof RectHitbox) {
+                RectHitbox rect = (RectHitbox) hitbox;
+                glBegin(GL_QUADS);
+                    glColor3f(1f, 0f, 0f);
+                    glVertex3f(rect.x, rect.y, 0f);
+                    glVertex3f(rect.x + rect.width, rect.y, 0f);
+                    glVertex3f(rect.x + rect.width, rect.y + rect.height, 0f);
+                    glVertex3f(rect.x, rect.y + rect.height, 0f);
+                glEnd();
+            }
+        }
+    }
     
 }
